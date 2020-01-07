@@ -2,19 +2,22 @@ import sys
 import random
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtGui import QPainter, QColor, QPen
-from PyQt5.QtCore import Qt
-from PyQt5 import uic
+from UI import Ui_Form
 
-class Circles(QWidget):
+
+class Circles(QWidget, Ui_Form):
     def __init__(self):
         super().__init__()
-        uic.loadUi('UI.ui', self)
+        self.setupUi(self)
         self.circle = False
         self.pushButton.clicked.connect(self.run)
 
     def run(self):
         self.x, self.y = random.randint(50, 300), random.randint(50, 250)
         self.diameter = random.randint(10, 120)
+        self.pen = QPen(QColor(random.randint(0, 255), random.randint(0, 255),
+                               random.randint(0, 255)), 2)
+
         self.circle = True
 
     def paintEvent(self, event):
@@ -25,8 +28,7 @@ class Circles(QWidget):
             qp.end()
 
     def drawCircle(self, qp):
-        pen = QPen(Qt.yellow, 2)
-        qp.setPen(pen)
+        qp.setPen(self.pen)
         qp.drawEllipse(self.x, self.y, self.diameter, self.diameter)
         self.update()
 
